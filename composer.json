@@ -1,0 +1,15 @@
+{
+    "name": "flyboyk/omnipay-ipg-online",
+    "description": "omnipay ipg online",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "php1",
+            "email": "php1@pet1718.com"
+        }
+    ],
+    "require": {
+        "thephpleague/omnipay-common": "2.*"
+    }
+}
