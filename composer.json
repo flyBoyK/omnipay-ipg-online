@@ -10,6 +10,7 @@
         }
     ],
     "require": {
-        "thephpleague/omnipay-common": "2.*"
+        "swiftmailer/swiftmailer": "5.4.*",
+        "omnipay/common": "~2.5.1"
     }
 }
