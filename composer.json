@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "swiftmailer/swiftmailer": "5.4.*",
+        "ext-curl": "*",
         "omnipay/common": "~2.5.1"
     }
 }

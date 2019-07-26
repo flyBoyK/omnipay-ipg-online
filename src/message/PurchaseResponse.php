@@ -4,6 +4,7 @@ namespace Omnipay\IpgOnline\Message;
 
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RedirectResponseInterface;
+use Omnipay\IpgOnline\Helper;
 
 class PurchaseResponse extends AbstractResponse implements RedirectResponseInterface
 {
@@ -74,39 +75,70 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
      */
     private function getTransactionForm()
     {
-        $data = $this->getData();
+        $action             = $this->request->getCardFormAction();
+        $companyName        = $this->request->getCompanyName();
+        $companyLogo        = $this->request->getCompanyLogo();
 
-        $bashDir = __DIR__;
+        $orderInfo       = $this->request->getOrderInfo();
+        $orderId         = $orderInfo['order_id'];
+        $totalAmount     = $orderInfo['text_total_amount'];
+        $payAmount       = $orderInfo['text_pay_amount'];
+        $customerName    = $orderInfo['customer_name'];
+        $customerMobile  = $orderInfo['customer_mobile'];
+        $customerAddress = $orderInfo['customer_address'];
 
-        $companyName        = $data['company_name'];
-        $companyLogo        = $data['company_logo'];
-        $orderId            = $data['order_id'];
-        $totalAmount        = $data['total_amount'];
-        $payAmount          = $data['pay_amount'];
-        $customerName       = $data['customer_name'];
-        $customerMobile     = $data['customer_mobile'];
-        $customerAddress    = $data['customer_address'];
+        // 测试环境自动填入测试信用卡
+        $environment = $this->request->getEnvironment();
+        if ($environment === 'test') {
+            $cardholder         = 'Master testing';
+            $card_number        = $this->request->getTestCardNumber();
+            $expiration_month   = $this->request->getTestCardExpirationMonth();
+            $expiration_year    = $this->request->getTestCardExpirationYear();
+            $cvv                = $this->request->getTestCardCvv();
+        } else {
+            $cardholder         = '';
+            $card_number        = '';
+            $expiration_month   = '';
+            $expiration_year    = '';
+            $cvv                = '';
+        }
 
         $year_options = '';
         for ($i = 0; $i < 20; $i ++) {
             $year_str = substr((string) (date('Y') + $i), -2);
 
-            $year_options .= sprintf(
-                "<option value='%s'>%s</option>",
-                $year_str,
-                $year_str
-            );
+            if ($expiration_year == $year_str) {
+                $year_options .= sprintf(
+                    "<option value='%s' selected='selected'>%s</option>",
+                    $year_str,
+                    $year_str
+                );
+            } else {
+                $year_options .= sprintf(
+                    "<option value='%s'>%s</option>",
+                    $year_str,
+                    $year_str
+                );
+            }
         }
 
         $month_options = '';
         for ($i = 1; $i <= 12; $i ++) {
             $month_str = $i < 10 ? '0' . $i : (string) $i;
 
-            $month_options .= sprintf(
-                "<option value='%s'>%s</option>",
-                $month_str,
-                $month_str
-            );
+            if ($expiration_month == $month_str) {
+                $month_options .= sprintf(
+                    "<option value='%s' selected='selected'>%s</option>",
+                    $month_str,
+                    $month_str
+                );
+            } else {
+                $month_options .= sprintf(
+                    "<option value='%s'>%s</option>",
+                    $month_str,
+                    $month_str
+                );
+            }
         }
 
         $html = <<<HTML
@@ -174,16 +206,16 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
             </div>
         </div>
         <div class="card-form">
-            <form action="index.php" method="post" name="form_card" id="form_card" enctype="multipart/form-data">
+            <form action="$action" method="post" name="form_card" id="form_card" enctype="multipart/form-data">
                 <div class="input-item input-card-number">
                     <div class="form-label clearfix">
                         <div class="label-text">卡號</div>
                         <div class="label-required">*</div>
                     </div>
-                    <div><input type="text" name="card_number" class="form-control"></div>
+                    <div><input type="text" name="card_number" value="$card_number" class="form-control"></div>
                 </div>
                 <div class="input-item clearfix">
-                    <div class="card-logo" data-id="mastercard"><img width="100%" src="$bashDir/images/mastercard.png" alt=""></div>
+                    <div class="card-logo" data-id="mastercard"><img width="100%" src="../src/message/images/mastercard.png" alt=""></div>
                     <div class="card-logo" data-id="visa"><img width="100%" src="../src/message/images/visa.png" alt=""></div>
                     <div class="card-logo" data-id="jcb"><img width="100%" src="../src/message/images/jcb.png" alt=""></div>
                 </div>
@@ -195,7 +227,7 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
                                 <div class="label-required">*</div>
                             </div>
                             <div>
-                                <select name="expiration-month" class="form-control">
+                                <select name="expiration_month" class="form-control">
                                     <option value="0">月</option>
                                     $month_options
                                 </select>
@@ -207,7 +239,7 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
                                 <div class="label-required">*</div>
                             </div>
                             <div>
-                                <select name="expiration-year" class="form-control">
+                                <select name="expiration_year" class="form-control">
                                     <option value="0">年</option>
                                     $year_options
                                 </select>
@@ -220,7 +252,7 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
                         <div class="label-text">持卡人姓名</div>
                         <div class="label-required">*</div>
                     </div>
-                    <div><input type="text" name="cardholder" class="form-control"></div>
+                    <div><input type="text" name="cardholder" value="$cardholder" class="form-control"></div>
                 </div>
                 <div class="input-item input-cvv">
                     <div class="clearfix">
@@ -230,7 +262,7 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
                                 <div class="label-required">*</div>
                             </div>
                             <div>
-                                <input type="text" name="cvv" class="form-control">
+                                <input type="text" name="cvv" value="$cvv" class="form-control">
                             </div>
                         </div>
                         <div class="text-info" style="float:left; margin: 35px auto auto 15px">
@@ -418,15 +450,19 @@ HTML;
      */
     private function submitTransaction()
     {
-        $data = $this->getData();
-
         // Request
-        // TODO
+        $response = Helper::sendTransaction($this->request);
 
         // Callback Url
-        $callback_url = $data['callback_url'];
+        $callback_url = $this->request->getCallbackUrl();
 
-        $html = <<<HTML
+        // 支付资料
+        $payInfo = $this->request->getPayInfo();
+
+        // 支付ID
+        $payId = $payInfo['pay_id'];
+
+        return <<<HTML
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -434,13 +470,35 @@ HTML;
         <title>Redirecting...</title>
     </head>
     <body onload="document.forms[0].submit();">
-        <form action="$callback_url" method="get">
-            <p>Redirecting to payment page...</p>
+        <form action="$callback_url" method="post">
+            <input type="hidden" name="pay_id" value="$payId">
+            <textarea name="response_soap" style="display: none">$response</textarea>
+            <p>Redirecting...</p>
         </form>
     </body>
 </html>
 HTML;
+    }
 
-        return $html;
+    /**
+     * 支付失败问询是否重新支付
+     *
+     * @param array $result
+     * @return string
+     */
+    public function payFailed(array $result)
+    {
+        return ''; // TODO
+    }
+
+    /**
+     * 成功支付直接跳转
+     *
+     * @param array $result
+     * @return string
+     */
+    public function paySuccess(array $result)
+    {
+        return '';// TODO
     }
 }

@@ -135,7 +135,7 @@ class Gateway extends AbstractGateway
      * Set client ssl certificate file path
      * @param $clientSslCertificateFilePath
      */
-    public function setClientSslCertificateFilePath($clientSslCertificateFilePath)
+    public function setClientSslCertFilePath($clientSslCertificateFilePath)
     {
         $this->setParameter('client_ssl_cert_file_path', $clientSslCertificateFilePath);
     }
@@ -177,25 +177,135 @@ class Gateway extends AbstractGateway
     }
 
     /**
-     * Get purchase request url
+     * 取得支付环境 {测试OR生产}
      * @return string
      */
-    public function getPurchaseRequestUrl()
+    public function getEnvironment()
     {
-        return str_replace('\\', DIRECTORY_SEPARATOR, $this->getParameter('purchase_request_url'));
+        return $this->getParameter('environment');
     }
 
     /**
-     * Set purchase request url
-     * @param string $purchaseRequestUrl
+     * 设置支付环境
+     * @param $environment
      */
-    public function setPurchaseRequestUrl($purchaseRequestUrl)
+    public function setEnvironment($environment)
     {
-        $this->setParameter('purchase_request_url', $purchaseRequestUrl);
+        $this->setParameter('environment', $environment);
     }
 
     /**
-     * Get purchase request callback url
+     * 取得测试环境的网关Url
+     * @return string
+     */
+    public function getRequestTestUrl()
+    {
+        return str_replace('\\', DIRECTORY_SEPARATOR, $this->getParameter('request_test_url'));
+    }
+
+    /**
+     * 设置测试环境的网关Url
+     * @param $url
+     */
+    public function setRequestTestUrl($url)
+    {
+        $this->setParameter('request_test_url', $url);
+    }
+
+    /**
+     * 取得测试信用卡账号
+     * @return string
+     */
+    public function getTestCardNumber()
+    {
+        return $this->getParameter('test_card_number');
+    }
+
+    /**
+     * 设置测试信用卡账号
+     * @param string $testCardNumber
+     */
+    public function setTestCardNumber($testCardNumber)
+    {
+        $this->setParameter('test_card_number', $testCardNumber);
+    }
+
+    /**
+     * 取得测试信用卡过期月份
+     * @return string
+     */
+    public function getTestCardExpirationMonth()
+    {
+        return $this->getParameter('test_card_expiration_month');
+    }
+
+    /**
+     * 设置测试信用卡过期月份
+     * @param string $month
+     */
+    public function setTestCardExpirationMonth($month)
+    {
+        $this->setParameter('test_card_expiration_month', $month);
+    }
+
+    /**
+     * 取得测试信用卡过期年份
+     * @return string
+     */
+    public function getTestCardExpirationYear()
+    {
+        return $this->getParameter('test_card_expiration_year');
+    }
+
+    /**
+     * 设置测试信用卡过期年份
+     *
+     * @param string $year
+     */
+    public function setTestCardExpirationYear($year)
+    {
+        $this->setParameter('test_card_expiration_year', $year);
+    }
+
+    /**
+     * 取得测试信用卡安全码
+     * @return string
+     */
+    public function getTestCardCvv()
+    {
+        return $this->getParameter('test_card_cvv');
+    }
+
+    /**
+     * 设置测试信用卡安全码
+     * @param string $number
+     */
+    public function setTestCardCvv($number)
+    {
+        $this->setParameter('test_card_cvv', $number);
+    }
+
+    /**
+     * 取得网关Api
+     * @return string
+     */
+    public function getRequestUrl()
+    {
+        return str_replace('\\', DIRECTORY_SEPARATOR, $this->getParameter('request_url'));
+    }
+
+    /**
+     * 设置网关Api
+     *
+     * @param string $url
+     */
+    public function setRequestUrl($url)
+    {
+        $this->setParameter('request_url', $url);
+    }
+
+    /**
+     * 取得支付回调Api
      * @return string
      */
     public function getPurchaseRequestCallbackUrl()
@@ -204,7 +314,7 @@ class Gateway extends AbstractGateway
     }
 
     /**
-     * Set purchase request callback url
+     * 设置支付回调Api
      * @param $purchaseRequestCallbackUrl
      */
     public function setPurchaseRequestCallbackUrl($purchaseRequestCallbackUrl)
@@ -213,21 +323,22 @@ class Gateway extends AbstractGateway
     }
 
     /**
-     * Get purchase request form url
+     * 取得表单提交地址
      * @return string
      */
-    public function getPurchaseRequestFormUrl()
+    public function getCardFormAction()
     {
-        return str_replace('\\', DIRECTORY_SEPARATOR, $this->getParameter('purchase_request_form_url'));
+        return str_replace('\\', DIRECTORY_SEPARATOR, $this->getParameter('card_form_action'));
     }
 
     /**
-     * Set purchase request form url
-     * @param $purchaseRequestFormUrl
+     * 设置表单提交地址
+     *
+     * @param $cardFormAction
      */
-    public function setPurchaseRequestFormUrl($purchaseRequestFormUrl)
+    public function setCardFormAction($cardFormAction)
     {
-        $this->setParameter('purchase_request_form_url', $purchaseRequestFormUrl);
+        $this->setParameter('card_form_action', $cardFormAction);
     }
 
     /**
@@ -291,7 +402,7 @@ class Gateway extends AbstractGateway
      */
     public function completePurchase(array $options = array())
     {
-        // TODO: Implement completePurchase() method.
+        return $this->createRequest('Omnipay\IpgOnline\Message\CompletePurchaseRequest', $options);
     }
 
     /**
