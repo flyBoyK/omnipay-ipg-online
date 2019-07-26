@@ -9,6 +9,11 @@
             "email": "php1@pet1718.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "Omnipay\\IpgOnline\\": "src"
+        }
+    },
     "require": {
         "ext-curl": "*",
         "omnipay/common": "~2.5.1"
