@@ -11,6 +11,17 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
     /* @var PurchaseRequest $request */
     protected $request;
 
+    /* @var string $imageDir 图片路劲 */
+    protected $imageDir = 'flyboyk/omnipay-ipg-online/src/message/images';
+
+    /**
+     * @inheritdoc
+     */
+    public function isRedirect()
+    {
+        return true;
+    }
+
     /**
      * @inheritdoc
      */
@@ -32,15 +43,7 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
      */
     public function isSuccessful()
     {
-        return true;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function isRedirect()
-    {
-        return true;
+        return false;
     }
 
     /**
@@ -79,13 +82,13 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
         $companyName        = $this->request->getCompanyName();
         $companyLogo        = $this->request->getCompanyLogo();
 
-        $orderInfo       = $this->request->getOrderInfo();
-        $orderId         = $orderInfo['order_id'];
-        $totalAmount     = $orderInfo['text_total_amount'];
-        $payAmount       = $orderInfo['text_pay_amount'];
-        $customerName    = $orderInfo['customer_name'];
-        $customerMobile  = $orderInfo['customer_mobile'];
-        $customerAddress = $orderInfo['customer_address'];
+        $orderInfo          = $this->request->getOrderInfo();
+        $orderId            = $orderInfo['order_id'];
+        $totalAmount        = $orderInfo['text_total_amount'];
+        $payAmount          = $orderInfo['text_pay_amount'];
+        $customerName       = $orderInfo['customer_name'];
+        $customerMobile     = $orderInfo['customer_mobile'];
+        $customerAddress    = $orderInfo['customer_address'];
 
         // 测试环境自动填入测试信用卡
         $environment = $this->request->getEnvironment();
@@ -141,6 +144,18 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
             }
         }
 
+        // 项目域名
+        $projectDomain = $this->request->getProjectDomain();
+
+        // 项目Composer vendor路径
+        $projectVendorDir = $this->request->getProjectVendorDir();
+
+        // 需要的图片路径
+        $imageDir = $projectDomain . $projectVendorDir . '/' . $this->imageDir;
+
+        // 需要的Library路径
+        $library = $projectDomain . 'catalog/view/javascript';
+
         $html = <<<HTML
 <!DOCTYPE html>
 <html lang="en">
@@ -148,10 +163,10 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no"/>
     <title>IPG online 安全支付</title>
-    <link rel="stylesheet" media="screen" href="../src/message/library/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" media="screen" href="../src/message/library/font-awesome/css/font-awesome.min.css">
-    <script type="text/javascript" src="../src/message/library/jquery/jquery-2.1.1.min.js"></script>
-    <script type="text/javascript" src="../src/message/library/bootstrap/bootstrap.min.js"></script>
+    <link rel="stylesheet" media="screen" href="$library/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" media="screen" href="$library/font-awesome/css/font-awesome.min.css">
+    <script type="text/javascript" src="$library/jquery/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="$library/bootstrap/js/bootstrap.min.js"></script>
     <style>
         .content {
             background-color: #FFFFFF;
@@ -215,9 +230,15 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
                     <div><input type="text" name="card_number" value="$card_number" class="form-control"></div>
                 </div>
                 <div class="input-item clearfix">
-                    <div class="card-logo" data-id="mastercard"><img width="100%" src="../src/message/images/mastercard.png" alt=""></div>
-                    <div class="card-logo" data-id="visa"><img width="100%" src="../src/message/images/visa.png" alt=""></div>
-                    <div class="card-logo" data-id="jcb"><img width="100%" src="../src/message/images/jcb.png" alt=""></div>
+                    <div class="card-logo" data-id="mastercard">
+                        <img width="100%" src="$imageDir/mastercard.png" alt="">
+                    </div>
+                    <div class="card-logo" data-id="visa">
+                        <img width="100%" src="$imageDir/visa.png" alt="">
+                    </div>
+                    <div class="card-logo " data-id="jcb">
+                        <img width="100%" src="$imageDir/jcb.png" alt="">
+                    </div>
                 </div>
                 <div class="input-item input-month-and-year">
                     <div class="clearfix">
@@ -265,8 +286,8 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
                                 <input type="text" name="cvv" value="$cvv" class="form-control">
                             </div>
                         </div>
-                        <div class="text-info" style="float:left; margin: 35px auto auto 15px">
-                            <span><img width="30px" src="../src/message/images/csc_other.png" alt=""></span>
+                        <div class="text-info" style="float:left; margin: 32px auto auto 15px">
+                            <span><img width="30px" src="$imageDir/csc_other.png" alt=""></span>
                             <span style="font-size: 12px">卡背面顯示的最後<b>3位數字</b></span>
                         </div>
                     </div>
@@ -278,7 +299,7 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
                         <table>
                             <tbody>
                                 <tr>
-                                    <td style="width: 36px" align="right">編號：</td>
+                                    <td style="width: 38px" align="right">編號：</td>
                                     <td>$orderId</td>
                                 </tr>
                                 <tr>
@@ -312,7 +333,7 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
         </div>
         <div class="footer clearfix">
             <div style="float: right; margin: 58px 10px">
-                <img src="../src/message/images/first_data_logo.png" alt="">
+                <img src="$imageDir/first_data_logo.png" alt="">
             </div>
         </div>
     </div>
@@ -452,6 +473,7 @@ HTML;
     {
         // Request
         $response = Helper::sendTransaction($this->request);
+        $response = json_encode($response, JSON_UNESCAPED_UNICODE);
 
         // Callback Url
         $callback_url = $this->request->getCallbackUrl();

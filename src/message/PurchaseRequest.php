@@ -169,6 +169,42 @@ class PurchaseRequest extends AbstractRequest
     }
 
     /**
+     * 取得项目域名
+     * @return string
+     */
+    public function getProjectDomain()
+    {
+        return $this->getParameter('project_domain');
+    }
+
+    /**
+     * 设置项目域名
+     * @param $domain
+     */
+    public function setProjectDomain($domain)
+    {
+        $this->setParameter('project_domain', $domain);
+    }
+
+    /**
+     * 取得项目Vendor文件路径
+     * @return string
+     */
+    public function getProjectVendorDir()
+    {
+        return $this->getParameter('project_vendor_dir');
+    }
+
+    /**
+     * 设置项目Vendor文件路径
+     * @param $dir
+     */
+    public function setProjectVendorDir($dir)
+    {
+        $this->setParameter('project_vendor_dir', $dir);
+    }
+
+    /**
      * Get purchase request soap
      * @return string
      */
