@@ -32,7 +32,8 @@ class CompletePurchaseRequest extends AbstractRequest
         return [
             'success' => (bool) $this->getResponseSoap(),
             'message' => 'test message',
-            'transaction_id' => 'test'
+            'transaction_id' => 'test',
+            'response_soap' => $this->getResponseSoap(),
         ];
     }
 
