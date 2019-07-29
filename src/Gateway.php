@@ -394,7 +394,7 @@ class Gateway extends AbstractGateway
      */
     public function purchase(array $options = array())
     {
-        return $this->createRequest('Omnipay\IpgOnline\Message\PurchaseRequest', $options);
+        return $this->createRequest('\Omnipay\IpgOnline\Message\PurchaseRequest', $options);
     }
 
     /**
@@ -402,7 +402,7 @@ class Gateway extends AbstractGateway
      */
     public function completePurchase(array $options = array())
     {
-        return $this->createRequest('Omnipay\IpgOnline\Message\CompletePurchaseRequest', $options);
+        return $this->createRequest('\Omnipay\IpgOnline\Message\CompletePurchaseRequest', $options);
     }
 
     /**
