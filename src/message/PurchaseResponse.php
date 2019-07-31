@@ -103,7 +103,7 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
         $stringToHash .= $this->getDateTime();
         $stringToHash .= $payInfo['amount'];
         $stringToHash .= $this->request->getCurrency();
-        $stringToHash .= $this->request->getSharedSecret();
+        $stringToHash .= $this->request->getShareSecret();
 
         $ascii = bin2hex($stringToHash);
 

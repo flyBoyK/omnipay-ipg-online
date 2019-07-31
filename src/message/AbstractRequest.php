@@ -206,20 +206,21 @@ abstract class AbstractRequest extends CommonRequest
     }
 
     /**
-     * Get shared secret
+     * Get merchant name
      * @return string
      */
-    public function getSharedSecret()
+    public function getShareSecret()
     {
-        return $this->getParameter('shared_secret');
+        return $this->getParameter('share_secret');
     }
 
     /**
      * Set shared secret
+     *
      * @param string $sharedSecret
      */
-    public function setSharedSecret($sharedSecret)
+    public function setShareSecret($sharedSecret)
     {
-        $this->setParameter('shared_secret', $sharedSecret);
+        $this->setParameter('share_secret', $sharedSecret);
     }
 }

@@ -90,9 +90,9 @@ class Gateway extends AbstractGateway
      * Get merchant name
      * @return string
      */
-    public function getSharedSecret()
+    public function getShareSecret()
     {
-        return $this->getParameter('shared_secret');
+        return $this->getParameter('share_secret');
     }
 
     /**
@@ -100,9 +100,9 @@ class Gateway extends AbstractGateway
      *
      * @param string $sharedSecret
      */
-    public function setSharedSecret($sharedSecret)
+    public function setShareSecret($sharedSecret)
     {
-        $this->setParameter('shared_secret', $sharedSecret);
+        $this->setParameter('share_secret', $sharedSecret);
     }
 
     /**
