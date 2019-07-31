@@ -1,6 +1,5 @@
-.idea
-config.php
-composer.lock
-composer.phar
-/vendor
-/test
+*
+!.gitignore
+!src/
+!composer.json
+!README.md

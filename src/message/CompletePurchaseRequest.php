@@ -2,39 +2,93 @@
 
 namespace Omnipay\IpgOnline\Message;
 
-use Omnipay\Common\Message\ResponseInterface;
-
 class CompletePurchaseRequest extends AbstractRequest
 {
     /**
-     * 取得回应的SOAP
-     * @return string xml
+     * Get approval code
+     * @return string
      */
-    public function getResponseSoap()
+    public function getApprovalCode()
     {
-        return $this->getParameter('response_soap');
+        return $this->getParameter('approval_code');
     }
 
     /**
-     * 设置回应的SOAP
-     * @param string $responseSoap
+     * @param string $approvalCode
      */
-    public function setResponseSoap($responseSoap)
+    public function setApprovalCode($approvalCode)
     {
-        $this->setParameter('response_soap', $responseSoap);
+        $this->setParameter('approval_code', $approvalCode);
+    }
+
+    /**
+     * Get Order id
+     * @return string
+     */
+    public function getOid()
+    {
+        return $this->getParameter('oid');
+    }
+
+    /**
+     * Set oid
+     * @param string $oid
+     */
+    public function setOid($oid)
+    {
+        $this->setParameter('oid', $oid);
+    }
+
+    /**
+     * Get Status
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->getParameter('status');
+    }
+
+    /**
+     * Set status
+     * @param string $status
+     */
+    public function setStatus($status)
+    {
+        $this->setParameter('status', $status);
+    }
+
+    /**
+     * Get ipg transaction id
+     * @return string
+     */
+    public function getIpgTransactionID()
+    {
+        return $this->getParameter('ipg_transaction_id');
+    }
+
+    /**
+     * Set ipg transaction id
+     * @param string $ipgTransactionID
+     */
+    public function setIpgTransactionID($ipgTransactionID)
+    {
+        $this->setParameter('ipg_transaction_id', $ipgTransactionID);
     }
 
     /**
      * @inheritdoc
+     * @throws
      */
     public function getData()
     {
-        return [
-            'success' => false,
-            'message' => 'test message',
-            'transaction_id' => 'test',
-            'response_soap' => $this->getResponseSoap(),
-        ];
+        $this->validate(
+            'approval_code',
+            'oid',
+            'status',
+            'ipg_transaction_id'
+        );
+
+        return [];
     }
 
     /**

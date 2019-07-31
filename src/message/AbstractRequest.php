@@ -7,21 +7,39 @@ use Omnipay\Common\Message\AbstractRequest As CommonRequest;
 abstract class AbstractRequest extends CommonRequest
 {
     /**
-     * Set order info
-     * @param array $order_info
+     * 取得时区名称【Asia/Shanghai | Asia/Beijing ...】
+     * @return string
      */
-    public function setOrderInfo(array $order_info)
+    public function getTimezoneName()
     {
-        $this->parameters->set('order_info', $order_info);
+        return $this->getParameter('timezone_name');
     }
 
     /**
-     * Get order info
-     * @return array
+     * 设置时区名称
+     * @param string $timezone_name
      */
-    public function getOrderInfo()
+    public function setTimezoneName($timezone_name)
     {
-        return $this->parameters->get('order_info');
+        $this->setParameter('timezone_name', $timezone_name);
+    }
+
+    /**
+     * 取得用戶語言
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->getParameter('language');
+    }
+
+    /**
+     * 设置用戶語言
+     * @param string $language
+     */
+    public function setLanguage($language)
+    {
+        $this->setParameter('language', $language);
     }
 
     /**
@@ -98,75 +116,21 @@ abstract class AbstractRequest extends CommonRequest
     }
 
     /**
-     * Get trust cert file path
+     * 取得测试环境的网关Api
      * @return string
      */
-    public function getTrustCertFilePath()
+    public function getRequestTestUrl()
     {
-        return str_replace('\\', DIRECTORY_SEPARATOR, $this->getParameter('trust_cert_file_path'));
+        return str_replace('\\', DIRECTORY_SEPARATOR, $this->getParameter('request_test_url'));
     }
 
     /**
-     * Set trust cert file path
-     * @param $trustCertFilePath
+     * 设置测试环境的网关Api
+     * @param $url
      */
-    public function setTrustCertFilePath($trustCertFilePath)
+    public function setRequestTestUrl($url)
     {
-        $this->setParameter('trust_cert_file_path', $trustCertFilePath);
-    }
-
-    /**
-     * Get client ssl certificate file path
-     * @return string
-     */
-    public function getClientSslCertFilePath()
-    {
-        return str_replace('\\', DIRECTORY_SEPARATOR, $this->getParameter('client_ssl_cert_file_path'));
-    }
-
-    /**
-     * Set client ssl certificate file path
-     * @param $clientSslCertificateFilePath
-     */
-    public function setClientSslCertFilePath($clientSslCertificateFilePath)
-    {
-        $this->setParameter('client_ssl_cert_file_path', $clientSslCertificateFilePath);
-    }
-
-    /**
-     * Get client ssl key file path
-     * @return string
-     */
-    public function getClientSslKeyFilePath()
-    {
-        return str_replace('\\', DIRECTORY_SEPARATOR, $this->getParameter('client_ssl_key_file_path'));
-    }
-
-    /**
-     * Set client ssl key file path
-     * @param string $clientSslKeyFilePath
-     */
-    public function setClientSslKeyFilePath($clientSslKeyFilePath)
-    {
-        $this->setParameter('client_ssl_key_file_path', $clientSslKeyFilePath);
-    }
-
-    /**
-     * Get client ssl key password
-     * @return string
-     */
-    public function getClientSslKeyPassword()
-    {
-        return $this->getParameter('client_ssl_key_password');
-    }
-
-    /**
-     * Set client ssl key password
-     * @param $clientSslKeyPassword
-     */
-    public function setClientSslKeyPassword($clientSslKeyPassword)
-    {
-        $this->setParameter('client_ssl_key_password', $clientSslKeyPassword);
+        $this->setParameter('request_test_url', $url);
     }
 
     /**
@@ -239,5 +203,23 @@ abstract class AbstractRequest extends CommonRequest
     public function setMerchantName($merchantName)
     {
         $this->setParameter('merchant_name', $merchantName);
+    }
+
+    /**
+     * Get shared secret
+     * @return string
+     */
+    public function getSharedSecret()
+    {
+        return $this->getParameter('shared_secret');
+    }
+
+    /**
+     * Set shared secret
+     * @param string $sharedSecret
+     */
+    public function setSharedSecret($sharedSecret)
+    {
+        $this->setParameter('shared_secret', $sharedSecret);
     }
 }

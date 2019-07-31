@@ -15,24 +15,6 @@ class Gateway extends AbstractGateway
     }
 
     /**
-     * Get Pay logo
-     * @return string
-     */
-    public function getPayLogoFilePath()
-    {
-        return $this->getParameter('pay_logo_file_path');
-    }
-
-    /**
-     * Set Pay logo
-     * @param $payLogoFilePath
-     */
-    public function setPayLogoFilePath($payLogoFilePath)
-    {
-        $this->setParameter('pay_logo_file_path', $payLogoFilePath);
-    }
-
-    /**
      * Get store id
      * @return string
      */
@@ -105,75 +87,22 @@ class Gateway extends AbstractGateway
     }
 
     /**
-     * Get trust cert file path
+     * Get merchant name
      * @return string
      */
-    public function getTrustCertFilePath()
+    public function getSharedSecret()
     {
-        return str_replace('\\', DIRECTORY_SEPARATOR, $this->getParameter('trust_cert_file_path'));
+        return $this->getParameter('shared_secret');
     }
 
     /**
-     * Set trust cert file path
-     * @param $trustCertFilePath
+     * Set shared secret
+     *
+     * @param string $sharedSecret
      */
-    public function setTrustCertFilePath($trustCertFilePath)
+    public function setSharedSecret($sharedSecret)
     {
-        $this->setParameter('trust_cert_file_path', $trustCertFilePath);
-    }
-
-    /**
-     * Get client ssl certificate file path
-     * @return string
-     */
-    public function getClientSslCertFilePath()
-    {
-        return str_replace('\\', DIRECTORY_SEPARATOR, $this->getParameter('client_ssl_cert_file_path'));
-    }
-
-    /**
-     * Set client ssl certificate file path
-     * @param $clientSslCertificateFilePath
-     */
-    public function setClientSslCertFilePath($clientSslCertificateFilePath)
-    {
-        $this->setParameter('client_ssl_cert_file_path', $clientSslCertificateFilePath);
-    }
-
-    /**
-     * Get client ssl key file path
-     * @return string
-     */
-    public function getClientSslKeyFilePath()
-    {
-        return str_replace('\\', DIRECTORY_SEPARATOR, $this->getParameter('client_ssl_key_file_path'));
-    }
-
-    /**
-     * Set client ssl key file path
-     * @param string $clientSslKeyFilePath
-     */
-    public function setClientSslKeyFilePath($clientSslKeyFilePath)
-    {
-        $this->setParameter('client_ssl_key_file_path', $clientSslKeyFilePath);
-    }
-
-    /**
-     * Get client ssl key password
-     * @return string
-     */
-    public function getClientSslKeyPassword()
-    {
-        return $this->getParameter('client_ssl_key_password');
-    }
-
-    /**
-     * Set client ssl key password
-     * @param $clientSslKeyPassword
-     */
-    public function setClientSslKeyPassword($clientSslKeyPassword)
-    {
-        $this->setParameter('client_ssl_key_password', $clientSslKeyPassword);
+        $this->setParameter('shared_secret', $sharedSecret);
     }
 
     /**
@@ -213,79 +142,6 @@ class Gateway extends AbstractGateway
     }
 
     /**
-     * 取得测试信用卡账号
-     * @return string
-     */
-    public function getTestCardNumber()
-    {
-        return $this->getParameter('test_card_number');
-    }
-
-    /**
-     * 设置测试信用卡账号
-     * @param string $testCardNumber
-     */
-    public function setTestCardNumber($testCardNumber)
-    {
-        $this->setParameter('test_card_number', $testCardNumber);
-    }
-
-    /**
-     * 取得测试信用卡过期月份
-     * @return string
-     */
-    public function getTestCardExpirationMonth()
-    {
-        return $this->getParameter('test_card_expiration_month');
-    }
-
-    /**
-     * 设置测试信用卡过期月份
-     * @param string $month
-     */
-    public function setTestCardExpirationMonth($month)
-    {
-        $this->setParameter('test_card_expiration_month', $month);
-    }
-
-    /**
-     * 取得测试信用卡过期年份
-     * @return string
-     */
-    public function getTestCardExpirationYear()
-    {
-        return $this->getParameter('test_card_expiration_year');
-    }
-
-    /**
-     * 设置测试信用卡过期年份
-     *
-     * @param string $year
-     */
-    public function setTestCardExpirationYear($year)
-    {
-        $this->setParameter('test_card_expiration_year', $year);
-    }
-
-    /**
-     * 取得测试信用卡安全码
-     * @return string
-     */
-    public function getTestCardCvv()
-    {
-        return $this->getParameter('test_card_cvv');
-    }
-
-    /**
-     * 设置测试信用卡安全码
-     * @param string $number
-     */
-    public function setTestCardCvv($number)
-    {
-        $this->setParameter('test_card_cvv', $number);
-    }
-
-    /**
      * 取得网关Api
      * @return string
      */
@@ -320,25 +176,6 @@ class Gateway extends AbstractGateway
     public function setPurchaseRequestCallbackUrl($purchaseRequestCallbackUrl)
     {
         $this->setParameter('purchase_request_callback_url', $purchaseRequestCallbackUrl);
-    }
-
-    /**
-     * 取得表单提交地址
-     * @return string
-     */
-    public function getCardFormAction()
-    {
-        return str_replace('\\', DIRECTORY_SEPARATOR, $this->getParameter('card_form_action'));
-    }
-
-    /**
-     * 设置表单提交地址
-     *
-     * @param $cardFormAction
-     */
-    public function setCardFormAction($cardFormAction)
-    {
-        $this->setParameter('card_form_action', $cardFormAction);
     }
 
     /**
