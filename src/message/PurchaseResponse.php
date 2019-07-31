@@ -147,7 +147,7 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
         $environment = $this->request->getEnvironment();
 
         // 测试环境使用测试的URL
-        if ($environment === 'test') {
+        if ($environment === 'development') {
             $gatewayApi = $this->request->getRequestTestUrl();
         } else {
             $gatewayApi = $this->request->getRequestUrl();
