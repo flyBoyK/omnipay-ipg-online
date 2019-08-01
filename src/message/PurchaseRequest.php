@@ -32,6 +32,8 @@ class PurchaseRequest extends AbstractRequest
     {
         // 检查数据是否齐全
         $this->validate(
+            'store_id',
+            'share_secret',
             'callback_url',
             'request_url',
             'request_test_url',

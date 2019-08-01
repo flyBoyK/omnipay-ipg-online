@@ -76,16 +76,76 @@ class CompletePurchaseRequest extends AbstractRequest
     }
 
     /**
+     * Get charge total
+     * @return string
+     */
+    public function getChargeTotal()
+    {
+        return $this->getParameter('charge_total');
+    }
+
+    /**
+     * Set charge total
+     * @param string $chargeTotal
+     */
+    public function setChargeTotal($chargeTotal)
+    {
+        $this->setParameter('charge_total', $chargeTotal);
+    }
+
+    /**
+     * Get datetime
+     * @return string
+     */
+    public function getDatetime()
+    {
+        return $this->getParameter('datetime');
+    }
+
+    /**
+     * Set datetime
+     * @param string $datetime
+     */
+    public function setDatetime($datetime)
+    {
+        $this->setParameter('datetime', $datetime);
+    }
+
+    /**
+     * Get response hash
+     * @return string
+     */
+    public function getResponseHash()
+    {
+        return $this->getParameter('response_hash');
+    }
+
+    /**
+     * Set response hash
+     * @param string $responseHash
+     */
+    public function setResponseHash($responseHash)
+    {
+        $this->setParameter('response_hash', $responseHash);
+    }
+
+    /**
      * @inheritdoc
      * @throws
      */
     public function getData()
     {
         $this->validate(
+            'store_id',
+            'share_secret',
             'approval_code',
             'oid',
             'status',
-            'ipg_transaction_id'
+            'ipg_transaction_id',
+            'charge_total',
+            'currency',
+            'datetime',
+            'response_hash'
         );
 
         return [];
